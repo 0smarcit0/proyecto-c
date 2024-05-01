@@ -12,12 +12,81 @@ Equipo 10 Computacion 1 2024-1*/
 #include <locale.h>
 #include <string.h>
 #include <time.h>
+#define n 1000
+
 
 int main(){
     setlocale(LC_ALL,"spanish");
+    int respuestaDia, respuestaMenu, comparadorCedulaCliente;
+    char nombreCliente[30],apellidoCliente[30], direccionCliente[30];
+    int cedulaCliente, cantVisitasMercado=1, checker, idClienteRegistrado;
+    char infoClientesNombre[n][30], infoClientesApellido[n][30],infoClientesDireccion[n][30];
+    int visitasMercado[n][2]; 
+    //manejamos en una columna la cedula y en la otra la cantidad de veces que esa cedula (el cliente) ha ingresado a comprar algo en el mercado
 
-    printf("hello world");
+    char nombreProducto[12][30] = {{"arroz"},{"harina"},{"mantequilla"},{"mayonesa"}
+                                   ,{"leche entera"},{"leche condensada"},{"queso amarillo"},{"leche en polvo"}
+                                   ,{"tomate"},{"cebolla"},{"pimenton"},{"ajo"}};
+    int cantProducto[3][4] = {{10},{10},{10},{10},
+                               {10},{10},{10},{10},
+                               {10},{10},{10},{10}};
 
+    int precioProducto[3][4]= {{10},{11},{15},{14},
+                               {9},{15},{12},{16},
+                               {8},{7},{6},{5}};
+
+    
+    do{
+        printf("\t\t ======================== \n");
+        printf("\t BIENVENIDO AL SUPERMERCADO!");
+        printf("\t\t ======================== \n");
+        do
+        {
+            printf("OPCIONES.\n");
+            printf("1) Abrir el carrito. \n");
+            printf("2) Consultar productos por nombre.\n");
+            printf("3) Salir de la jornada. \n");
+            scanf("%d", &respuestaMenu);
+            switch (respuestaMenu)
+            {
+            case 1:
+                printf("\tBienvenido al carrito, primeramente ingrese los datos del cliente.\n");
+                printf("Cedula de identidad del cliente: ");
+                scanf("%d",&comparadorCedulaCliente);
+
+                for(int i =0; i<cantVisitasMercado;i++){
+                    if(comparadorCedulaCliente == visitasMercado[i][0]){
+                        checker = 1;
+                        idClienteRegistrado =i;
+                    }
+                }
+
+                if(checker ==1){
+                    printf("El cliente ya se encuentra en nuestra base de datos'\n");
+                    printf("Nombre: %s", infoClientesNombre[idClienteRegistrado]);
+                    printf("\napellido: %s", infoClientesApellido[idClienteRegistrado]);
+                    printf("\nCedula: %d", visitasMercado[idClienteRegistrado][0]);
+                    printf("\nDireccion: %s", infoClientesNombre[idClienteRegistrado]);
+                }else{
+                    
+
+                }
+
+                break;
+            
+            default:
+                break;
+            }
+            
+        } while (respuestaMenu==3);
+        
+
+
+    }while(respuestaDia==1);
+
+    
+    
+   
 
 
     getche();
