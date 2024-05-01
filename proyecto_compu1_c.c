@@ -16,6 +16,8 @@ Equipo 10 Computacion 1 2024-1*/
 int main(){
     setlocale(LC_ALL,"spanish");
 
+    printf("hello world");
+
 
 
     getche();
