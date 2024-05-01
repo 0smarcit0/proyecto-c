@@ -6,3 +6,18 @@ Equipo 10 Computacion 1 2024-1*/
 
 //Proyecto 20 puntos Parcial II Lenguaje C Seccion 11
 
+#include <stdlib.h>
+#include <conio.h>
+#include <stdio.h>
+#include <locale.h>
+#include <string.h>
+#include <time.h>
+
+int main(){
+    setlocale(LC_ALL,"spanish");
+
+
+
+    getche();
+    return 0;
+}
