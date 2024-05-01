@@ -17,9 +17,12 @@ Equipo 10 Computacion 1 2024-1*/
 
 int main(){
     setlocale(LC_ALL,"spanish");
-    int respuestaDia, respuestaMenu, comparadorCedulaCliente;
+    int respuestaDia, respuestaMenu, comparadorCedulaCliente, respuestaProductoCarrito;
     char nombreCliente[30],apellidoCliente[30], direccionCliente[30];
     int cedulaCliente, cantVisitasMercado=1, checker, idClienteRegistrado;
+    int j=0,k=0;
+    int seleccionProducto, seleccionCantProduct;
+
     char infoClientesNombre[n][30], infoClientesApellido[n][30],infoClientesDireccion[n][30];
     int visitasMercado[n][2]; 
     //manejamos en una columna la cedula y en la otra la cantidad de veces que esa cedula (el cliente) ha ingresado a comprar algo en el mercado
@@ -27,18 +30,18 @@ int main(){
     char nombreProducto[12][30] = {{"arroz"},{"harina"},{"mantequilla"},{"mayonesa"}
                                    ,{"leche entera"},{"leche condensada"},{"queso amarillo"},{"leche en polvo"}
                                    ,{"tomate"},{"cebolla"},{"pimenton"},{"ajo"}};
-    int cantProducto[3][4] = {{10},{10},{10},{10},
-                               {10},{10},{10},{10},
-                               {10},{10},{10},{10}};
+    int cantProducto[3][4] = {{10,10,10,10},
+                               {10,10,10,10},
+                               {10,10,10,10}};
 
-    int precioProducto[3][4]= {{10},{11},{15},{14},
-                               {9},{15},{12},{16},
-                               {8},{7},{6},{5}};
+    int precioProducto[3][4]= {{10,11,15,14},
+                               {9,15,12,16},
+                               {8,7,6,5}};
 
     
     do{
         printf("\t\t ======================== \n");
-        printf("\t BIENVENIDO AL SUPERMERCADO!");
+        printf("\t BIENVENIDO AL SUPERMERCADO!\n");
         printf("\t\t ======================== \n");
         do
         {
@@ -68,27 +71,54 @@ int main(){
                     printf("\nCedula: %d", visitasMercado[idClienteRegistrado][0]);
                     printf("\nDireccion: %s", infoClientesNombre[idClienteRegistrado]);
                 }else{
+                    visitasMercado[cantVisitasMercado][0]= comparadorCedulaCliente;
+                    printf("\nIngrese el nombre del cliente: ");
+                    scanf("%s",&infoClientesNombre[cantVisitasMercado]);
+                    printf("\ningrese el apellido del cliente: ");
+                    scanf("%s",&infoClientesApellido[cantVisitasMercado]);
+                    printf("\nIngrese la direccion (corta), del cliente: ");
+                    scanf("%s",&infoClientesDireccion[cantVisitasMercado]);
+
+                    cantVisitasMercado++;
+                    checker =0;
+                }
+                do{
+                	k=0;
+                    system("cls");
+                    printf("Productos disponibles en nuestro inventario:\n");
+                    for(int i =0;i<3;i++){
+                    	for(j=0;j<4;j++){
+                    		printf("%d) %s. Precio unitario: %d\n",k,nombreProducto[k],precioProducto[i][j]);
+                    		k++;
+						}
+                    }
+                    printf("ingrese la id y la cantidad del producto que quiere ingresar al carro: ");
+                    scanf("%d%d", &seleccionProducto,&seleccionCantProduct);
+
+
                     
 
-                }
+                    printf("quiere agregar otro producto? ");
+                    scanf("%d",&respuestaProductoCarrito);
+                } while(respuestaProductoCarrito==1);
+                
+
+
+
 
                 break;
-            
             default:
                 break;
             }
-            
-        } while (respuestaMenu==3);
+            printf("salir o continuar?");
+            scanf("%d", &respuestaMenu);
+        } while (respuestaMenu==1);
         
 
-
+        printf("salir? ");
+        scanf("%d",&respuestaDia);
     }while(respuestaDia==1);
-
     
-    
-   
-
-
     getche();
     return 0;
 }
