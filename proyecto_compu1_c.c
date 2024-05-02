@@ -78,6 +78,7 @@ int main(){
                     scanf("%s",&infoClientesApellido[cantVisitasMercado]);
                     printf("\nIngrese la direccion (corta), del cliente: ");
                     scanf("%s",&infoClientesDireccion[cantVisitasMercado]);
+                    fflush(stdin);
 
                     cantVisitasMercado++;
                     checker =0;
@@ -92,8 +93,10 @@ int main(){
                     		k++;
 						}
                     }
-                    printf("ingrese la id y la cantidad del producto que quiere ingresar al carro: ");
-                    scanf("%d%d", &seleccionProducto,&seleccionCantProduct);
+                    printf("ingrese la id del producto que quiere llevar: ");
+                    scanf("%d", &seleccionProducto);
+                    printf("\nIngrese la cantidad que desea llevar: ");
+                    scanf("%d", &seleccionCantProduct);
 
 
                     
