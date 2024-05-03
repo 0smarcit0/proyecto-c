@@ -38,6 +38,19 @@ int main(){
                                {9,15,12,16},
                                {8,7,6,5}};
 
+    int productos[n][3]= {{10,10,0},
+                         {11,10,0},
+                         {15,10,0},
+                         {14,10,0},
+                         {9,10,1},
+                         {15,10,1},
+                         {12,10,1},
+                         {16,10,1},
+                         {8,10,2},
+                         {7,10,2},
+                         {6,10,2},
+                         {5,10,2}};
+
     
     do{
         printf("\t\t ======================== \n");
@@ -87,11 +100,11 @@ int main(){
                 	k=0;
                     system("cls");
                     printf("Productos disponibles en nuestro inventario:\n");
-                    for(int i =0;i<3;i++){
-                    	for(j=0;j<4;j++){
-                    		printf("%d) %s. Precio unitario: %d\n",k,nombreProducto[k],precioProducto[i][j]);
-                    		k++;
-						}
+                    for(int i =0;i<12;i++){
+                    	
+                    	printf("%d) %s. Precio unitario: %d\n",k,nombreProducto[k],productos[i][0]);
+                    	k++;
+						
                     }
                     printf("ingrese la id del producto que quiere llevar: ");
                     scanf("%d", &seleccionProducto);
@@ -125,3 +138,5 @@ int main(){
     getche();
     return 0;
 }
+
+
