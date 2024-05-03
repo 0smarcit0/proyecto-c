@@ -17,11 +17,10 @@ Equipo 10 Computacion 1 2024-1*/
 
 int main(){
     setlocale(LC_ALL,"spanish");
-    int respuestaDia, respuestaMenu, comparadorCedulaCliente, respuestaProductoCarrito;
+    int respuestaDia, respuestaMenu, comparadorCedulaCliente, respuestaProductoCarrito, respuestaCicloProveedor;
     char nombreCliente[30],apellidoCliente[30], direccionCliente[30];
-    int cedulaCliente, cantVisitasMercado=1, checker, idClienteRegistrado;
-    int j=0,k=0;
-    int seleccionProducto, seleccionCantProduct;
+    int cedulaCliente, cantVisitasMercado=1, checker, idClienteRegistrado,checkerProveedor,checkValidezIndiceProducto=0,checkerValidezCantProducto=0;
+    int seleccionProducto=0, seleccionCantProduct,seleccionProveedor;
 
     char infoClientesNombre[n][30], infoClientesApellido[n][30],infoClientesDireccion[n][30];
     int visitasMercado[n][2]; 
@@ -30,26 +29,22 @@ int main(){
     char nombreProducto[12][30] = {{"arroz"},{"harina"},{"mantequilla"},{"mayonesa"}
                                    ,{"leche entera"},{"leche condensada"},{"queso amarillo"},{"leche en polvo"}
                                    ,{"tomate"},{"cebolla"},{"pimenton"},{"ajo"}};
-    int cantProducto[3][4] = {{10,10,10,10},
-                               {10,10,10,10},
-                               {10,10,10,10}};
+    
+    char proveedores[3][50]={{"Empresas Polar"},{"Paisa"}, {"Frutas y Verduras Pepito Perez"}};
+    int idProveedores[3]={0,1,2};
 
-    int precioProducto[3][4]= {{10,11,15,14},
-                               {9,15,12,16},
-                               {8,7,6,5}};
-
-    int productos[n][3]= {{10,10,0},
-                         {11,10,0},
-                         {15,10,0},
-                         {14,10,0},
-                         {9,10,1},
-                         {15,10,1},
-                         {12,10,1},
-                         {16,10,1},
-                         {8,10,2},
-                         {7,10,2},
-                         {6,10,2},
-                         {5,10,2}};
+    int productos[n][4]= {{10,10,0,0},
+                         {11,10,0,1},
+                         {15,10,0,2},
+                         {14,10,0,3},
+                         {9,10,1,4},
+                         {15,10,1,5},
+                         {12,10,1,6},
+                         {16,10,1,7},
+                         {8,10,2,8},
+                         {7,10,2,9},
+                         {6,10,2,10},
+                         {5,10,2,11}};
 
     
     do{
@@ -97,31 +92,77 @@ int main(){
                     checker =0;
                 }
                 do{
-                	k=0;
-                    system("cls");
-                    printf("Productos disponibles en nuestro inventario:\n");
-                    for(int i =0;i<12;i++){
-                    	
-                    	printf("%d) %s. Precio unitario: %d\n",k,nombreProducto[k],productos[i][0]);
-                    	k++;
-						
-                    }
-                    printf("ingrese la id del producto que quiere llevar: ");
-                    scanf("%d", &seleccionProducto);
-                    printf("\nIngrese la cantidad que desea llevar: ");
-                    scanf("%d", &seleccionCantProduct);
+                    do
+                    {
+                        checkerProveedor=0;
+                        system("cls");
+                        printf("Selecione uno de nuestros proveedores para ver los productos de esa marca: \n");
+                        for(int i= 0;i<3;i++){
+                            printf("%d) %s \n",i,proveedores[i]);
+                        }
 
+                        printf(" ");
+                        scanf("%d",&seleccionProveedor);
 
+                        for(int i=0; i<3;i++){
+                            if(seleccionProveedor==idProveedores[i]){
+                                checkerProveedor = 1;
+                            }
+                        }
+                        
+                    } while (checkerProveedor==0);
                     
+                    
+                    do{
+                        fflush(stdin);
+                        for (int i = 0; i < 12; i++){
+                            if(seleccionProveedor==productos[i][2]){
+                                printf("%d) %s. \n\tPrecio:%d. \n \t Cantidad en stock: %d\n", i, nombreProducto[i],productos[i][0],productos[i][1]);
+                            }
+                        }
+                        do{
+                            checkValidezIndiceProducto=0;
+                            printf("Ingrese el Id del productro que desea llevar: ");
+                            scanf("%d",&seleccionProducto);
+    
+                            for(int i=0;i<12;i++){
+                            if(seleccionProveedor==productos[i][2]){
+                                if(productos[i][3]==seleccionProducto){
+                                    checkValidezIndiceProducto=1;
+                                }
+                            }        
+                         }
 
+                        } while (checkValidezIndiceProducto==0);
+                        
+
+                        
+                        do{
+                            checkerValidezCantProducto=0;
+                            printf("Ingrese que cantidad desea llevar: ");
+                            scanf("%d",&seleccionCantProduct);
+                            for(int i=0;i<12;i++){
+                            if(seleccionProducto==productos[i][3]){
+                               if(productos[seleccionProducto][1]<seleccionCantProduct){
+                                  break;
+                                }else{
+
+                                    productos[seleccionProducto][1]-=seleccionCantProduct;
+                                    checkerValidezCantProducto =1;
+                                }
+                              }        
+                            }
+                        } while (checkerValidezCantProducto==0);
+
+                        printf("desea ingresar otro producto de este proveedor? \n 1)si \n 2)no \n");
+                        scanf("%d",&respuestaCicloProveedor);
+                    
+                        
+                    } while (respuestaCicloProveedor==1);
+                
                     printf("quiere agregar otro producto? ");
                     scanf("%d",&respuestaProductoCarrito);
                 } while(respuestaProductoCarrito==1);
-                
-
-
-
-
                 break;
             default:
                 break;
@@ -131,7 +172,7 @@ int main(){
         } while (respuestaMenu==1);
         
 
-        printf("salir? ");
+        printf("Comenzar otro dia?:  ");
         scanf("%d",&respuestaDia);
     }while(respuestaDia==1);
     
