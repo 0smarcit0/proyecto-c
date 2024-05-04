@@ -24,8 +24,8 @@ int main(){
     int seleccionProducto=0, seleccionCantProduct,seleccionProveedor;
     float totalCompra, totalParcial;
     int carritoCompra[50],cantProductosIngresados=0, cantProductosSeleccionados[50];
-    time_t tiempoahora;
-    time(&tiempoahora);
+    int secuenciaSimulacionDias=0, controlDias=0;
+    
     
 
     char infoClientesNombre[n][30], infoClientesApellido[n][30],infoClientesDireccion[n][30];
@@ -56,11 +56,15 @@ int main(){
 
     
     do{
+        
         printf("\t ======================== \n");
         printf("\t BIENVENIDO AL SUPERMERCADO!\n");
         printf("\t ======================== \n");
         do
         {
+            time_t tiempoahora;
+            time(&tiempoahora);
+            struct tm *mitiempo =localtime(&tiempoahora);
             printf("OPCIONES.\n");
             printf("1) Abrir el carrito. \n");
             printf("2) Consultar productos por nombre.\n");
@@ -82,6 +86,7 @@ int main(){
                     if(comparadorCedulaCliente == visitasMercado[i][0]){
                         checker = 1;
                         idClienteRegistrado =i;
+                        visitasMercado[i][1]+=1;
                     }
                 }
 
@@ -90,7 +95,7 @@ int main(){
                     printf("Nombre: %s", infoClientesNombre[idClienteRegistrado]);
                     printf("\napellido: %s", infoClientesApellido[idClienteRegistrado]);
                     printf("\nCedula: %d", visitasMercado[idClienteRegistrado][0]);
-                    printf("\nDireccion: %s", infoClientesNombre[idClienteRegistrado]);
+                    printf("\nDireccion: \n%s", infoClientesNombre[idClienteRegistrado]);
                     system("pause");
                 }else{
                     visitasMercado[cantVisitasMercado][0]= comparadorCedulaCliente;
@@ -101,10 +106,11 @@ int main(){
                     printf("\nIngrese la direccion (corta), del cliente: ");
                     scanf("%s",&infoClientesDireccion[cantVisitasMercado]);
                     fflush(stdin);
-
+                    visitasMercado[cantVisitasMercado][1]+=1;
                     cantVisitasMercado++;
                     checker =0;
                 }
+
                 do{
                     do
                     {
@@ -206,8 +212,8 @@ int main(){
                 totalCompra= totalParcial-(totalParcial*descMarcaAsociada);
                 printf("FACTURA \nDATOS DE LA FACTURA:\n");
                   
-                struct tm *mitiempo =localtime(&tiempoahora);
-                printf("Fecha y hora de la compra: %d/%d/%d %d:%d:%d \n", mitiempo->tm_mday, mitiempo->tm_mon+1, mitiempo->tm_year+1900,mitiempo->tm_hour,mitiempo->tm_min,mitiempo->tm_sec);
+                
+                printf("Fecha y hora de la compra: %d/%d/%d %d:%d:%d \n", mitiempo->tm_mday+secuenciaSimulacionDias, mitiempo->tm_mon+1, mitiempo->tm_year+1900,mitiempo->tm_hour,mitiempo->tm_min,mitiempo->tm_sec);
                 for(int i =0;i<cantVisitasMercado;i++){
                     if(comparadorCedulaCliente == visitasMercado[i][0]){
                         printf("Nombre: %s \n Apellido: %s\n Cedula: %d \n Direccion: %s\n",infoClientesNombre[i],infoClientesApellido[i],comparadorCedulaCliente,infoClientesDireccion[i]);
@@ -223,15 +229,18 @@ int main(){
             default:
                 break;
             }
-            printf("salir o continuar?");
+            printf("Atender otro cliente?");
             scanf("%d", &respuestaMenu);
 
         } while (respuestaMenu==1);
-        
 
+        
+        controlDias++;
         printf("Comenzar otro dia?:  ");
         scanf("%d",&respuestaDia);
-    }while(respuestaDia==1);
+        secuenciaSimulacionDias++;
+
+    }while(respuestaDia==1 && controlDias<5);
     
     getche();
     return 0;
