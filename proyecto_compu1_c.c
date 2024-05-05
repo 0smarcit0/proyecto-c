@@ -24,10 +24,8 @@ int main(){
     int seleccionProducto=0, seleccionCantProduct,seleccionProveedor;
     float totalCompra, totalParcial;
     int carritoCompra[50],cantProductosIngresados=0, cantProductosSeleccionados[50];
-    int secuenciaSimulacionDias=0, controlDias=0;
+    int secuenciaSimulacionDias=0, controlDias=0,idCompra=0,idCantIdProductos=0,cantMaximaProductos=0;
     
-    
-
     char infoClientesNombre[n][30], infoClientesApellido[n][30],infoClientesDireccion[n][30];
     int visitasMercado[n][2]; 
     //manejamos en una columna la cedula y en la otra la cantidad de veces que esa cedula (el cliente) ha ingresado a comprar algo en el mercado
@@ -38,6 +36,14 @@ int main(){
     
     char proveedores[3][50]={{"Empresas Polar"},{"Paisa"}, {"Frutas y Verduras Pepito Perez"}};
     int idProveedores[3]={0,1,2};
+
+    int fechas_HorasCompras[n][5];
+    int idProductosComprados[n][100];
+    int cantProductosComprados[n][100];
+    float totalIngresosCompras[n];
+    int axuliarControlDia=0;
+
+    fflush(stdin);
 
     
 
@@ -56,6 +62,7 @@ int main(){
 
     
     do{
+        fflush(stdin);
         
         printf("\t ======================== \n");
         printf("\t BIENVENIDO AL SUPERMERCADO!\n");
@@ -169,9 +176,14 @@ int main(){
                                     }else{
                                        checkValidezIndiceProducto=1;
                                        carritoCompra[cantProductosIngresados] =seleccionProducto;
+                                       for(int i =-1; i<idCantIdProductos;i++){
+                                            if(seleccionProducto==idProductosComprados[idCompra][idCantIdProductos]){
+                                                break;
+                                            }else{
+                                                idProductosComprados[idCompra][idCantIdProductos] =seleccionProducto;
+                                            }
+                                       }
                                     }
-                                    
-                                    
                                 }
                             }        
                          }
@@ -191,11 +203,16 @@ int main(){
                                     checkerValidezCantProducto =1;
                                     cantProductosSeleccionados[cantProductosIngresados]=seleccionCantProduct;
                                     cantProductosIngresados++;
-
+                                    totalParcial+=(productos[seleccionProducto][0]*seleccionCantProduct);
                                 }
-                              }        
+                              }
+
                             }
-                            totalParcial+=(productos[seleccionProducto][0]*seleccionCantProduct);
+                            cantProductosComprados[idCompra][idCantIdProductos]=seleccionCantProduct;
+                            idCantIdProductos++;
+                            //printf("%d\n",idCantIdProductos);
+
+                            
                         } while (checkerValidezCantProducto==0);
                         
 
@@ -210,10 +227,18 @@ int main(){
                 system("cls");
                 fflush(stdin);
                 totalCompra= totalParcial-(totalParcial*descMarcaAsociada);
+                totalIngresosCompras[idCompra] =totalCompra;
                 printf("FACTURA \nDATOS DE LA FACTURA:\n");
                   
                 
                 printf("Fecha y hora de la compra: %d/%d/%d %d:%d:%d \n", mitiempo->tm_mday+secuenciaSimulacionDias, mitiempo->tm_mon+1, mitiempo->tm_year+1900,mitiempo->tm_hour,mitiempo->tm_min,mitiempo->tm_sec);
+                fechas_HorasCompras[idCompra][0]=mitiempo->tm_mday+secuenciaSimulacionDias;
+                fechas_HorasCompras[idCompra][1]=mitiempo->tm_mon+1;
+                fechas_HorasCompras[idCompra][2]=mitiempo->tm_year+1900;
+                fechas_HorasCompras[idCompra][3]=mitiempo->tm_hour;
+                fechas_HorasCompras[idCompra][4]=mitiempo->tm_min;
+                fechas_HorasCompras[idCompra][5]=mitiempo->tm_sec;
+
                 for(int i =0;i<cantVisitasMercado;i++){
                     if(comparadorCedulaCliente == visitasMercado[i][0]){
                         printf("Nombre: %s \n Apellido: %s\n Cedula: %d \n Direccion: %s\n",infoClientesNombre[i],infoClientesApellido[i],comparadorCedulaCliente,infoClientesDireccion[i]);
@@ -224,8 +249,15 @@ int main(){
                     printf("%s, Cantidad: %d\n",nombreProducto[carritoCompra[i]],cantProductosSeleccionados[i]);
                 }
                 printf("Total a pagar: %0.2f \n",totalCompra);
-                break;
 
+                if(idCantIdProductos>cantMaximaProductos){
+                    cantMaximaProductos=idCantIdProductos;
+
+                }
+                
+                idCantIdProductos=0;
+                idCompra++;
+                break;
             default:
                 break;
             }
@@ -233,14 +265,42 @@ int main(){
             scanf("%d", &respuestaMenu);
 
         } while (respuestaMenu==1);
+        fflush(stdin);
 
-        
+        printf("\n FACTURACION DEL DIA.\n");
+        for(int i=axuliarControlDia;i<idCompra;i++){
+            printf("\n Factura %d\n",i+1);
+            printf("Productos: \n");
+            for(int j=0;j<cantMaximaProductos;j++){
+                //if(idProductosComprados[i][j]){
+                    printf("%s, cantidad: %d \n",nombreProducto[idProductosComprados[i][j]],cantProductosComprados[i][j]);
+                //}
+            }
+            printf("total compra: %f\n",totalIngresosCompras[i]);
+            printf("fecha y hora de la compra: %d/%d/%d %d:%d:%d\n",fechas_HorasCompras[i][0],fechas_HorasCompras[i][1],fechas_HorasCompras[i][2],fechas_HorasCompras[i][3],fechas_HorasCompras[i][4],fechas_HorasCompras[i][5]);
+
+        }
+        axuliarControlDia=idCompra;
         controlDias++;
         printf("Comenzar otro dia?:  ");
         scanf("%d",&respuestaDia);
         secuenciaSimulacionDias++;
-
     }while(respuestaDia==1 && controlDias<5);
+
+    printf("\nFacturacion de la semana.\n");
+    for(int i=0;i<idCompra;i++){
+            printf("\n Factura %d\n",i+1);
+            printf("Productos: \n");
+            for(int j=0;j<cantMaximaProductos;j++){
+                fflush(stdin);
+                if(idProductosComprados[i][j]){
+                    printf("%s, cantidad: %d \n",nombreProducto[idProductosComprados[i][j]],cantProductosComprados[i][j]);
+                }
+            }
+            printf("total compra: %f\n",totalIngresosCompras[i]);
+            printf("fecha y hora de la compra: %d/%d/%d %d:%d:%d\n",fechas_HorasCompras[i][0],fechas_HorasCompras[i][1],fechas_HorasCompras[i][2],fechas_HorasCompras[i][3],fechas_HorasCompras[i][4],fechas_HorasCompras[i][5]);
+    }
+
     
     getche();
     return 0;
